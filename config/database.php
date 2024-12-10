@@ -31,6 +31,11 @@ return [
 
     'connections' => [
 
+        'product_file' => [
+            'driver' => 'file',
+            'path' => storage_path('products.json'),
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
