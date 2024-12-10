@@ -10,6 +10,7 @@
 
 # Include public/storage contents
 /public/storage/*
+!/public/storage/products.json
 
 /storage/pail
 /vendor
