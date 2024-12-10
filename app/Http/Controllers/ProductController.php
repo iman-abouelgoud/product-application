@@ -49,4 +49,37 @@ class ProductController extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'edit-name' => 'required|string',
+                'edit-quantity' => 'required|integer|min:0',
+                'edit-price' => 'required|numeric|min:0'
+            ]);
+
+            $updatedProduct = Product::updateProduct($id, $validated);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => 'success',
+                    'product' => $updatedProduct,
+                    'products' => Product::getProducts()
+                ]);
+            }
+
+            return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => 'error',
+                    'errors' => $e->validator->errors()
+                ], 422);
+            }
+
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+    }
+
 }

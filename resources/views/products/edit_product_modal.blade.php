@@ -11,15 +11,15 @@
                     <input type="hidden" name="edit-id" id="edit-id">
                     <div class="mb-3">
                         <label class="form-label">Product Name</label>
-                        <input type="text" class="form-control" name="edit-name" id="edit-name" required>
+                        <input type="text" class="form-control" name="edit-name" id="edit-name" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Quantity in Stock</label>
-                        <input type="number" class="form-control" name="edit-quantity" id="edit-quantity" min="0" required>
+                        <input type="number" class="form-control" name="edit-quantity" id="edit-quantity" min="0" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Price per Item</label>
-                        <input type="number" step="0.01" class="form-control" name="edit-price" id="edit-price" min="0" required>
+                        <input type="number" step="0.01" class="form-control" name="edit-price" id="edit-price" min="0" >
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -11,15 +11,15 @@
             @csrf
             <div class="mb-3">
                 <label>Product Name</label>
-                <input type="text" class="form-control @error('name') error @enderror" name="name" value="{{ old('name') }}">
+                <input type="text" class="form-control" name="name" value="{{ old('name') }}">
             </div>
             <div class="mb-3">
                 <label>Quantity in Stock</label>
-                <input type="number" class="form-control @error('quantity') error @enderror" name="quantity" min="0" value="{{ old('quantity') }}">
+                <input type="number" class="form-control" name="quantity" min="0" value="{{ old('quantity') }}">
             </div>
             <div class="mb-3">
                 <label>Price per Item</label>
-                <input type="number" step="0.01" class="form-control @error('price') error @enderror" name="price" min="0" value="{{ old('price') }}">
+                <input type="number" step="0.01" class="form-control" name="price" min="0" value="{{ old('price') }}">
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
@@ -126,35 +126,42 @@
                 $('#editProductModal').modal('show');
             });
 
-            // $('#editProductForm').on('submit', function(e) {
-            //     e.preventDefault();
+            $('#editProductForm').on('submit', function(e) {
+                e.preventDefault();
 
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '{{ route('products.store') }}',
-            //         data: $(this).serialize(),
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="X-CSRF-TOKEN"]').attr('content')
-            //         },
-            //         success: function(response) {
-            //             if (response.status === 'success') {
-            //                 $('#editProductModal').modal('hide');
-            //                 location.reload();
-            //             }
-            //         },
-            //         error: function(xhr) {
-            //             if (xhr.status === 422) {
-            //                 var errors = xhr.responseJSON.errors;
+                var id = $('#edit-id').val();
+                // console.log(id);
 
-            //                 $.each(errors, function(field, messages) {
-            //                     var $input = $('#edit-' + field);
-            //                     $input.addClass('error');
-            //                     $input.after('<div class="error-message text-danger">' + messages[0] + '</div>');
-            //                 });
-            //             }
-            //         }
-            //     });
-            // });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('products.update', ['id' => ':id']) }}".replace(':id', id),
+                    data: $(this).serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="X-CSRF-TOKEN"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#editProductModal').modal('hide');
+                            alert('Product updated successfully!');
+                            location.reload();
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.errors;
+
+                            // console.log(xhr.responseJSON)
+
+                            $.each(errors, function(field, messages) {
+                                var $input = $('#' + field);
+                                // console.log($input);
+                                $input.addClass('error');
+                                $input.after('<div class="error-message text-danger">' + messages[0] + '</div>');
+                            });
+                        }
+                    }
+                });
+            });
         });
     </script>
 @endsection

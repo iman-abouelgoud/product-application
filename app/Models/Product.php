@@ -40,4 +40,24 @@ class Product extends Model
 
         return $newProduct;
     }
+
+    public static function updateProduct($id, $data)
+    {
+        $products = self::getProducts();
+
+        if (!isset($products[$id])) {
+            throw new \Exception('Product not found.');
+        }
+
+        $products[$id]['name'] = $data['edit-name'];
+        $products[$id]['quantity'] = intval($data['edit-quantity']);
+        $products[$id]['price'] = floatval($data['edit-price']);
+        $products[$id]['datetime'] = now()->format('Y-m-d H:i:s');
+        $products[$id]['total_value'] = intval($data['edit-quantity']) * floatval($data['edit-price']);
+
+        Storage::disk('public')->put('products.json', json_encode($products));
+
+        return $products[$id];
+    }
+
 }
