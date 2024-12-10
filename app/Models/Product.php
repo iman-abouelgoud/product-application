@@ -11,10 +11,16 @@ class Product extends Model
     {
         $path = 'products.json';
 
-        if (!Storage::exists($path)) {
-            Storage::put($path, json_encode([]));
+        // if (!Storage::exists($path)) {
+        //     Storage::put($path, json_encode([]));
+        // }
+        // return json_decode(Storage::get($path), true) ?? [];
+
+        if (!Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->put($path, json_encode([]));
         }
-        return json_decode(Storage::get($path), true) ?? [];
+
+        return json_decode(Storage::disk('public')->get($path), true) ?? [];
     }
 
     public static function createProduct($data)
@@ -30,7 +36,7 @@ class Product extends Model
         ];
 
         $products[] = $newProduct;
-        Storage::put('products.json', json_encode($products));
+        Storage::disk('public')->put('products.json', json_encode($products));
 
         return $newProduct;
     }

@@ -10,7 +10,6 @@ class ProductController extends Controller
     public function index() {
 
         $products = Product::getProducts();
-        
         $totalSum = 0;
         foreach ($products as $product) {
             $totalSum += $product['total_value'];

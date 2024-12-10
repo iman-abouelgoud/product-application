@@ -74,7 +74,8 @@
             $('#productForm').on('submit', function(e) {
                 e.preventDefault();
 
-                // console.log($(this).serialize());
+                console.log($(this).serialize());
+                // console.log($('meta[name="X-CSRF-TOKEN"]').attr('content'));
 
                 $('.error').removeClass('error');
                 $('.error-message').remove();
@@ -82,9 +83,9 @@
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('products.store') }}',
-                    attr: $(this).serialize(),
+                    data: $(this).serialize(),
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="X-CSRF-TOKEN"]').attr('content')
                     },
                     success: function(response) {
                         if (response.status === 'success') {
@@ -95,6 +96,8 @@
                         if (xhr.status === 422) {
 
                             var errors = xhr.responseJSON.errors;
+
+                            console.log(errors);
 
                             $.each(errors, function(field, messages) {
                                 var $input = $('[name="' + field + '"]');
@@ -123,35 +126,35 @@
                 $('#editProductModal').modal('show');
             });
 
-            $('#editProductForm').on('submit', function(e) {
-                e.preventDefault();
+            // $('#editProductForm').on('submit', function(e) {
+            //     e.preventDefault();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('products.store') }}',
-                    data: $(this).serialize(),
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            $('#editProductModal').modal('hide');
-                            location.reload();
-                        }
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            var errors = xhr.responseJSON.errors;
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '{{ route('products.store') }}',
+            //         data: $(this).serialize(),
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="X-CSRF-TOKEN"]').attr('content')
+            //         },
+            //         success: function(response) {
+            //             if (response.status === 'success') {
+            //                 $('#editProductModal').modal('hide');
+            //                 location.reload();
+            //             }
+            //         },
+            //         error: function(xhr) {
+            //             if (xhr.status === 422) {
+            //                 var errors = xhr.responseJSON.errors;
 
-                            $.each(errors, function(field, messages) {
-                                var $input = $('#edit-' + field);
-                                $input.addClass('error');
-                                $input.after('<div class="error-message text-danger">' + messages[0] + '</div>');
-                            });
-                        }
-                    }
-                });
-            });
+            //                 $.each(errors, function(field, messages) {
+            //                     var $input = $('#edit-' + field);
+            //                     $input.addClass('error');
+            //                     $input.after('<div class="error-message text-danger">' + messages[0] + '</div>');
+            //                 });
+            //             }
+            //         }
+            //     });
+            // });
         });
     </script>
 @endsection
