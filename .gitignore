@@ -2,8 +2,15 @@
 /node_modules
 /public/build
 /public/hot
-# /public/storage
 /storage/*.key
+
+# Ignore everything in storage except public folder
+/storage/*
+!/storage/app/public
+
+# Include public/storage contents
+/public/storage/*
+
 /storage/pail
 /vendor
 .env
